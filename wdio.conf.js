@@ -11,12 +11,13 @@ exports.config = {
     // ====================
     // wdio-chromedriver-service connfigs
     // ====================
-    // port to find chromedriver
+     // port to find chromedriver
     port: 9515, // default for ChromeDriver
     path: '/',
     // options
     chromeDriverArgs: ['--port=9515', '--url-base=\'/\''], // default for ChromeDriver
     chromeDriverLogs: './',
+
     // ==================
     // Specify Test Files
     // ==================
@@ -48,7 +49,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -58,7 +59,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         //
         browserName: 'chrome',
         // If outputDir is provided WebdriverIO can capture driver session logs
@@ -78,15 +79,15 @@ exports.config = {
     // Set specific log levels per logger
     // loggers:
     // - webdriver, webdriverio
-    // - @wdio/applitools-service, @wdio/browserstack-service, @wdio/devtools-service, @wdio/sauce-service
-    // - @wdio/mocha-framework, @wdio/jasmine-framework
-    // - @wdio/local-runner, @wdio/lambda-runner
-    // - @wdio/sumologic-reporter
-    // - @wdio/cli, @wdio/config, @wdio/sync, @wdio/utils
+    // - wdio-applitools-service, wdio-browserstack-service, wdio-devtools-service, wdio-sauce-service
+    // - wdio-mocha-framework, wdio-jasmine-framework
+    // - wdio-local-runner, wdio-lambda-runner
+    // - wdio-sumologic-reporter
+    // - wdio-cli, wdio-config, wdio-sync, wdio-utils
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     // logLevels: {
         // webdriver: 'info',
-        // '@wdio/applitools-service': 'info'
+        // 'wdio-applitools-service': 'info'
     // },
     //
     // If you only want to run your tests until a specific amount of tests have failed use
@@ -97,7 +98,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'http://localhost:3000/',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -128,7 +129,7 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter.html
-    // reporters: ['dot'],
+     reporters: ['spec'],
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -186,8 +187,13 @@ exports.config = {
      * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
      */
-    // beforeTest: function (test) {
-    // },
+    beforeTest: function (test) {
+        const chai = require('chai');
+        chai.use(require('chai-string'));
+        chai.use(require('chai-webdriverio').default(browser));
+        global.assert = chai.assert;
+        global.expect = chai.expect;
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
