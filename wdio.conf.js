@@ -74,7 +74,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'trace',
+    logLevel: 'info',
     //
     // Set specific log levels per logger
     // loggers:
@@ -187,10 +187,13 @@ exports.config = {
      * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
      */
-    beforeTest: function (test) {
+    beforeTest: function() {
         const chai = require('chai');
+
+        chai.use(require('chai-as-promised'));
         chai.use(require('chai-string'));
         chai.use(require('chai-webdriverio').default(browser));
+        
         global.assert = chai.assert;
         global.expect = chai.expect;
     },

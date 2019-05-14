@@ -4,15 +4,16 @@ import React, { Component } from 'react';
 // Components
 
 
-class TestButton extends Component {
+class Button extends Component {
     render() {
         return (
             <button
-                onClick={ () => { alert("hello world!")}}
+                onClick={ this.props.onClick }
             >
+                { this.props.caption }
             </button>
         )
 	}
 }
 
-export default TestButton
+export default Button

@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 import './App.css';
-import TestButton from './button/button';
+import { resq$, waitToLoadReact } from "resq";
+
+import Home from './views/home/Home';
+import Success from './views/success/Success';
+
+waitToLoadReact(2000);
+window.resq$ = resq$;
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <TestButton />
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route path="/home" exact component={Home} />
+          <Route path="/success" exact component={Success} />
+          <Redirect to="/home"/>
+        </Switch>
+      </Router>
     </div>
   );
 }
